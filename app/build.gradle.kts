@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.helloworld"
+    namespace = "com.test.smallbee"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.helloworld"
+        applicationId = "com.test.smallbee"
         minSdk = 26
         targetSdk = 35
         versionCode = 1
@@ -34,4 +34,5 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(project(":common"))
 }

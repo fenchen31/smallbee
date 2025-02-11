@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.common"
+    namespace = "com.test.smallbee"
     compileSdk = 35
 
     defaultConfig {
