@@ -1,9 +1,10 @@
 plugins {
     alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
-    namespace = "com.test.smallbee"
+    namespace = "com.test.smallbee.common"
     compileSdk = 35
 
     defaultConfig {
@@ -24,9 +25,17 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    dataBinding{
+        enable = true
+    }
+    kotlinOptions {
+        jvmTarget = "11"
+    }
 }
 
 dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
+    implementation(libs.core.ktx)
+    implementation(libs.viewbinding)
 }

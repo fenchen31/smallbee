@@ -1,3 +1,6 @@
 <resources>
-    <string name="app_name">hello world</string>
+    <string name="app_name">小蜜蜂</string>
+    <string name="welcome_to_use_smallbee">欢迎使用小蜜蜂</string>
+    <string name="agree">同意</string>
+    <string name="do_not_agree_and_exit">不同意并退出</string>
 </resources>

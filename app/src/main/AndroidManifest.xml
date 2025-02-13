@@ -10,16 +10,22 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.HelloWorld"
+        android:theme="@style/Theme.SmallBee"
         tools:targetApi="31">
         <activity
-            android:name=".activity.MainActivity"
-            android:exported="true">
+            android:name="com.test.smallbee.activity.SplashActivity"
+            android:exported="true"
+            android:screenOrientation="fullSensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.test.smallbee.activity.MainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 
