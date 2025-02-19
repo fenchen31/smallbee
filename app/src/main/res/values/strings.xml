@@ -2,5 +2,7 @@
     <string name="app_name">小蜜蜂</string>
     <string name="welcome_to_use_smallbee">欢迎使用小蜜蜂</string>
     <string name="agree">同意</string>
+    <string name="loading_point_point_point">加载中…</string>
     <string name="do_not_agree_and_exit">不同意并退出</string>
+    <string name="load_error_click_screen_to_retry">加载失败，点击屏幕重试</string>
 </resources>

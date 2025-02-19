@@ -38,4 +38,6 @@ dependencies {
     implementation(libs.material)
     implementation(libs.core.ktx)
     implementation(libs.viewbinding)
+    implementation(libs.activity)
+    implementation(libs.constraintlayout)
 }

@@ -1,5 +1,6 @@
 package com.test.smallbee.base
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -8,17 +9,16 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.viewbinding.ViewBinding
 
 abstract class SimpleAdapter<T, B : ViewBinding>(var layoutId: Int) : Adapter<SimpleViewHolder>() {
+    open lateinit var context: Context
     var data: ArrayList<T> = arrayListOf<T>()
         set(value){
             field = value
             notifyDataSetChanged()
         }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SimpleViewHolder {
-        return SimpleViewHolder(
-            DataBindingUtil.bind<ViewDataBinding?>(
-                LayoutInflater.from(parent.context).inflate(layoutId, parent, false)
-            )
-        )
+        val view =LayoutInflater.from(parent.context).inflate(layoutId, parent, false)
+        context = view.context
+        return SimpleViewHolder(DataBindingUtil.bind<ViewDataBinding?>(view))
     }
 
     override fun getItemCount(): Int {

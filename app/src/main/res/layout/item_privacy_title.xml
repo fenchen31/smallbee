@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -14,10 +13,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/color_000000"
-            android:textSize="15sp"
-            android:layout_marginTop="15dp"
-            tools:text="的事件发生的健康拉屎的父母速度快辣椒粉围殴按时打卡就分开了爱上对方即可领取围殴阿斯顿饭"
-            android:id="@+id/tv_text" />
+            android:id="@+id/tv_text"
+            android:textColor="@color/color_333333"
+            android:textSize="12sp"
+            tools:text="水岸东方尽快落实到位" />
     </LinearLayout>
 </layout>
