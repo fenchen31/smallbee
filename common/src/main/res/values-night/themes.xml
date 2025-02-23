@@ -1,0 +1,11 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="ThemeCommonSmallBeeParent" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
+        <item name="buttonStyle">@style/BaseButtonStyle</item>
+
+        //设置沉浸式状态栏
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+</resources>

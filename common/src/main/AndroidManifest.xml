@@ -3,6 +3,9 @@
 
     <application>
         <activity
+            android:name="com.test.smallbee.base.BaseActivity"
+            android:exported="false" />
+        <activity
             android:name="com.test.smallbee.base.ErrorActivity"
             android:exported="false" />
     </application>

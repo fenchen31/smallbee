@@ -13,6 +13,7 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
@@ -43,4 +44,5 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(project(":common"))
     implementation(libs.core.ktx)
+    implementation(libs.swiperefreshlayout)
 }

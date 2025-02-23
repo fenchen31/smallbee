@@ -11,12 +11,13 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
 import com.test.smallbee.app.R
 import com.test.smallbee.app.databinding.ActivityH5Binding
+import com.test.smallbee.base.BaseActivity
 import com.test.smallbee.util.Const
 import com.test.smallbee.util.H5WebChromeClinet
 import com.test.smallbee.util.H5WebViewClient
 import java.io.Serializable
 
-class H5Activity : AppCompatActivity() {
+class H5Activity : BaseActivity() {
     lateinit var binding: ActivityH5Binding
     var data: Response? = null
     override fun onCreate(savedInstanceState: Bundle?) {

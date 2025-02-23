@@ -5,28 +5,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
 import android.view.WindowManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.test.smallbee.activity.MainActivity
 import com.test.smallbee.activity.SplashActivity
 import com.test.smallbee.adapter.PrivacyMultiAdapter
 import com.test.smallbee.app.R
 import com.test.smallbee.app.databinding.DialogPrivacyBinding
 import com.test.smallbee.response.PrivacyResponse
+import com.test.smallbee.util.Const
+import com.test.smallbee.util.SharePreferencesUtil
 
 class PrivacyDialog(val layoutId: Int) : DialogFragment() {
     lateinit var binding: DialogPrivacyBinding
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate<DialogPrivacyBinding>(
-            LayoutInflater.from(context), layoutId, container, false
-        )
+        binding = DataBindingUtil.inflate(LayoutInflater.from(context), layoutId, container, false)
         binding.rvPrivacy.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         val commonAdapter = PrivacyMultiAdapter()
@@ -39,14 +37,25 @@ class PrivacyDialog(val layoutId: Int) : DialogFragment() {
             }
             commonAdapter.setItemData(layoutId, data.data.get(i))
         }
-        binding.btnAgree.setOnClickListener {
-            startActivity(
-                Intent(
-                    context, MainActivity::class.java
-                )
-            )
-        }
+        binding.rvPrivacy.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val manager = recyclerView.layoutManager as LinearLayoutManager
+                val itemCount = manager.itemCount
+                val lastVisibilityItem = manager.findLastCompletelyVisibleItemPosition()
+                if (lastVisibilityItem >= itemCount - 1) {
+                    binding.viewCover.visibility = View.GONE
+                } else {
+                    binding.viewCover.visibility = View.VISIBLE
+                }
+            }
+        })
         binding.btnDoNotAgree.setOnClickListener { (context as SplashActivity).finish() }
+        binding.btnAgree.setOnClickListener {
+            SharePreferencesUtil.put(Const.agree_privacy, true)
+            startActivity(Intent(context, MainActivity::class.java))
+            (context as SplashActivity).finish()
+        }
         isCancelable = false
         return binding.root
     }
@@ -62,26 +71,6 @@ class PrivacyDialog(val layoutId: Int) : DialogFragment() {
             params.width = WindowManager.LayoutParams.MATCH_PARENT
             params.height = WindowManager.LayoutParams.WRAP_CONTENT
             window.attributes = params
-            //3.使用viewTreeObserver设置margin，兼容Android 11及更高版本
-            val margin = (10f * resources.displayMetrics.density + 0.5f).toInt()
-            window.decorView.viewTreeObserver.addOnGlobalLayoutListener(object :
-                ViewTreeObserver.OnGlobalLayoutListener {
-                override fun onGlobalLayout() {
-                    window.decorView.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                    val contentView = (window.decorView as ViewGroup).getChildAt(0)
-                    if (contentView.layoutParams is ViewGroup.MarginLayoutParams) {
-                        val marginParams = contentView.layoutParams as ViewGroup.MarginLayoutParams
-                        marginParams.setMargins(margin, 0, margin, 0)
-                        contentView.layoutParams = marginParams
-                    } else {
-                        val marginParams = ViewGroup.MarginLayoutParams(contentView.layoutParams)
-                        marginParams.setMargins(margin, 0, margin, 0)
-                        val parent = contentView.parent as? ViewGroup
-                        parent?.updateViewLayout(contentView, marginParams)
-                    }
-                    contentView.requestLayout()
-                }
-            })
         }
     }
 
@@ -115,7 +104,7 @@ class PrivacyDialog(val layoutId: Int) : DialogFragment() {
                         "https://www.baidu.com/s?wd=%E6%96%87%E5%BF%83%E4%B8%80%E8%A8%80%E5%9C%A8%E7%BA%BF%E4%BD%BF%E7%94%A8&rsv_spt=1&rsv_iqid=0xdd6646730023858c&issp=1&f=3&rsv_bp=1&rsv_idx=2&ie=utf-8&tn=baiduhome_pg&rsv_dl=ts_0&rsv_enter=1&rsv_sug3=6&rsv_sug1=6&rsv_sug7=100&rsv_sug2=0&rsv_btype=i&prefixsug=wenxin&rsp=0&inputT=2610&rsv_sug4=2610&rsv_sug=1"
                     ),
                     PrivacyResponse.PrivacyItem.PrivacyItemChild(
-                        text = "，仅代表年地方看爱上了大家快去微弱啊说了的空间发的发生的尺码没抵抗力强诶偶然的积分卡的发生的快乐" + "仅代表年地方看爱上了大家快去微弱啊说了的空间发的发生的尺码没抵抗力强诶偶然的积分卡的发生的快乐" + "仅代表年地方看爱上了大家快去微弱啊说了的空间发的发生的尺码没抵抗力强诶偶然的积分卡的发生的快乐" + "仅代表年地方看爱上了大家快去微弱啊说了的空间发的发生的尺码没抵抗力强诶偶然的积分卡的发生的快乐"
+                        text = "，仅代表年地方看爱上了大家快去微弱啊说了的空间发的发生的尺码没抵抗力强诶偶然的积分卡的发生的快乐" + "仅代表年地方看爱上了大家快去微弱啊说了的空间发的发生的尺码没抵抗力强诶偶然的积分卡的发生的快乐" + "仅代表年地方看爱上了大家快去微弱啊说了的空间发的发生的尺码没抵抗力强诶偶然的积分卡的发生的快乐"
                     ),
                     PrivacyResponse.PrivacyItem.PrivacyItemChild(
                         "《快点拉拉草莓》",

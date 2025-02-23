@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    //去除button的默认背景和边距
+    <style name="BaseButtonStyle" parent="Widget.AppCompat.Button">
+        <item name="background">@null</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="minHeight">0dp</item>
+        <item name="minWidth">0dp</item>
+    </style>
+</resources>

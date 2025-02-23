@@ -1,6 +1,5 @@
 package com.test.smallbee.util
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.util.Log
@@ -8,8 +7,9 @@ import com.test.smallbee.base.ErrorActivity
 import java.io.PrintWriter
 import java.io.StringWriter
 
-class WholeException(var context: Context) : Thread.UncaughtExceptionHandler {
-    private val TAG = WholeException::class.simpleName
+//处理所有未捕获异常
+class SmallBeeException(var context: Context) : Thread.UncaughtExceptionHandler {
+    private val TAG = SmallBeeException::class.simpleName
 
     override fun uncaughtException(t: Thread, e: Throwable) {
         val stringWriter = StringWriter()

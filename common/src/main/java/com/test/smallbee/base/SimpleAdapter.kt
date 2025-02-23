@@ -8,9 +8,9 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.viewbinding.ViewBinding
 
-abstract class SimpleAdapter<T, B : ViewBinding>(var layoutId: Int) : Adapter<SimpleViewHolder>() {
+abstract class SimpleAdapter<D, B : ViewBinding>(var layoutId: Int) : Adapter<SimpleViewHolder>() {
     open lateinit var context: Context
-    var data: ArrayList<T> = arrayListOf<T>()
+    var data: ArrayList<D> = arrayListOf<D>()
         set(value){
             field = value
             notifyDataSetChanged()
@@ -29,10 +29,10 @@ abstract class SimpleAdapter<T, B : ViewBinding>(var layoutId: Int) : Adapter<Si
         bindItemData(holder.binding as B, data[position], position)
     }
 
-    fun addData(addData: ArrayList<T>) {
+    fun addData(addData: ArrayList<D>) {
         this.data.addAll(addData)
         notifyItemRangeChanged(data.size - addData.size, data.size)
     }
 
-    abstract fun bindItemData(binding: B, data: T, position: Int);
+    abstract fun bindItemData(binding: B, data: D, position: Int);
 }
