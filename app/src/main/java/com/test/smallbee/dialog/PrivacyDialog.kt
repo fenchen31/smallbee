@@ -50,8 +50,8 @@ class PrivacyDialog(val layoutId: Int) : DialogFragment() {
                 }
             }
         })
-        binding.btnDoNotAgree.setOnClickListener { (context as SplashActivity).finish() }
-        binding.btnAgree.setOnClickListener {
+        binding.btDoNotAgree.setOnClickListener { (context as SplashActivity).finish() }
+        binding.btAgree.setOnClickListener {
             SharePreferencesUtil.put(Const.agree_privacy, true)
             startActivity(Intent(context, MainActivity::class.java))
             (context as SplashActivity).finish()

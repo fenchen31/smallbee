@@ -49,7 +49,7 @@
                 app:layout_constraintStart_toStartOf="@id/rv_privacy" />
 
             <Button
-                android:id="@+id/btn_agree"
+                android:id="@+id/bt_agree"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="50dp"
@@ -67,7 +67,7 @@
                 app:layout_constraintTop_toBottomOf="@id/rv_privacy" />
 
             <Button
-                android:id="@+id/btn_do_not_agree"
+                android:id="@+id/bt_do_not_agree"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="50dp"
@@ -82,7 +82,7 @@
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btn_agree" />
+                app:layout_constraintTop_toBottomOf="@id/bt_agree" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
 </layout>

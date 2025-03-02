@@ -14,11 +14,11 @@ object ScreenUtil {
         return (context.resources.displayMetrics.density * dp + 0.5f).toInt()
     }
 
-    fun px2Dp(context: Context, px: Float): Int{
+    fun px2dp(context: Context, px: Float): Int{
         return (((px - 0.5f)/ context.resources.displayMetrics.density).toInt())
     }
 
-    // 沉浸式状态栏
+    // 沉浸式状态栏，还需要配合themes.xml一起使用
     fun immersiveStatusBar(view: View) {
         ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
