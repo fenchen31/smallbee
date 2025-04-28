@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "smallbee"
 include(":app")
- 
+include(":common")

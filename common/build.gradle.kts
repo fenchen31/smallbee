@@ -1,19 +1,16 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
 }
 val config = rootProject.extra.get("android") as? Map<*, *>
 val version = rootProject.extra.get("version") as? Map<*, *>
 android {
-    namespace = "com.practice.smallbee"
+    namespace = "com.practice.common"
     compileSdk = config?.get("compileSdk") as Int
 
     defaultConfig {
-        applicationId = "com.practice.smallbee"
         minSdk = config.get("minSdk") as Int
-        targetSdk = config.get("targetSdk") as Int
-        versionCode = config.get("versionCode") as Int
-        versionName = config.get("versionName") as String
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -38,6 +35,4 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    implementation(libs.androidx.activity)
-    implementation(libs.androidx.constraintlayout)
 }
