@@ -22,3 +22,6 @@ dependencyResolutionManagement {
 rootProject.name = "smallbee"
 include(":app")
 include(":common")
+include(":annotation")
+include(":annotation_compiler")
+include(":annotation_core")
