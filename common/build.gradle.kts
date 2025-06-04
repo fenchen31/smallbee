@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    kotlin("kapt")
 }
 val config = rootProject.extra.get("android") as? Map<*, *>
 val version = rootProject.extra.get("version") as? Map<*, *>
@@ -11,6 +12,12 @@ android {
     defaultConfig {
         minSdk = config.get("minSdk") as Int
         consumerProguardFiles("consumer-rules.pro")
+        javaCompileOptions {
+            annotationProcessorOptions {
+                //路由跳转配置
+                arguments.putAll(mutableMapOf("MODULE_NAME" to "COMMON"))
+            }
+        }
     }
 
     buildTypes {
@@ -26,6 +33,9 @@ android {
         sourceCompatibility = config.get("sourceCompatibility") as JavaVersion
         targetCompatibility = config.get("targetCompatibility") as JavaVersion
     }
+    dataBinding{
+        enable = config.get("dataBinding") as Boolean
+    }
     kotlinOptions {
         jvmTarget = config.get("jvmTarget") as String
     }
@@ -35,4 +45,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+    kapt(project(":annotation_compiler"))
+    implementation(project(":annotation_core"))
+    implementation(project(":annotation"))
 }

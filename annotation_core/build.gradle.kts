@@ -1,26 +1,16 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    kotlin("kapt")
 }
 val config = rootProject.extra.get("android") as? Map<*, *>
 val version = rootProject.extra.get("version") as? Map<*, *>
 android {
-    namespace = "com.practice.smallbee"
+    namespace = "com.practice.core"
     compileSdk = config?.get("compileSdk") as Int
 
     defaultConfig {
-        applicationId = "com.practice.smallbee"
         minSdk = config.get("minSdk") as Int
-        targetSdk = config.get("targetSdk") as Int
-        versionCode = config.get("versionCode") as Int
-        versionName = config.get("versionName") as String
-        javaCompileOptions {
-            annotationProcessorOptions {
-                //路由跳转配置
-                arguments.putAll(mutableMapOf("MODULE_NAME" to "APP"))
-            }
-        }
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -39,19 +29,12 @@ android {
     kotlinOptions {
         jvmTarget = config.get("jvmTarget") as String
     }
-    dataBinding{
-        enable = config.get("dataBinding") as Boolean
-    }
 }
 
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    implementation(libs.androidx.activity)
-    implementation(libs.androidx.constraintlayout)
-    kapt(project(":annotation_compiler"))
-    implementation(project(":annotation_core"))
     implementation(project(":annotation"))
-    implementation(project(":common"))
+    annotationProcessor("com.google.auto.service:auto-service:${version?.get("autoServiceVersion") as String}")
 }

@@ -1,21 +1,17 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# 保留 ARouter 类及其所有成员
+-keep class com.practice.core.ARouter { *; }
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# 保留 ARouter 的 Companion 对象（Kotlin 静态方法支持）
+-keep class com.practice.core.ARouter$Companion { *; }
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# 保留 IRouter 接口及其实现类（用于路由注册）
+-keep interface com.practice.core.IRouter { *; }
+-keep class * implements com.practice.core.IRouter { *; }
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# 保留所有通过 Class.forName() 调用的类（避免被移除）
+-keep class * {
+    public <init>(...);
+}
+
+# 如果你使用了 APT 生成 RouterUtil 类，也要保留它们
+-keep class com.practice.*.RouterUtil* { *; }

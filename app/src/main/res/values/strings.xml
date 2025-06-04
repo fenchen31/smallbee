@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">smallbee</string>
+    <string name="jump_commonactivity">跳转CommonActivity</string>
+    <string name="this_is_testactivity">这里是测试Activity</string>
 </resources>

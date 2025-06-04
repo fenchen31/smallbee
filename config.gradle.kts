@@ -8,7 +8,8 @@ extra.apply{
         "sourceCompatibility"           to JavaVersion.VERSION_21,
         "targetCompatibility"           to JavaVersion.VERSION_21,
         "jvmTarget"                     to "21",
-        "isMinifyEnabled"               to true))
+        "isMinifyEnabled"               to false,
+        "dataBinding"                   to true))
 
     set("version", mapOf(
         "autoServiceVersion"            to "1.1.1",

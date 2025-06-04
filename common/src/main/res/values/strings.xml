@@ -1,2 +1,3 @@
 <resources>
+    <string name="this_is_commonactivity">这里是commonActivity</string>
 </resources>

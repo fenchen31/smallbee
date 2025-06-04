@@ -54,10 +54,11 @@ class RouteProcess : AbstractProcessor() {
                 val className = "RouterUtil"
                 var writer: Writer? = null
                 try {
+                    val moduleName = processingEnv.options["MODULE_NAME"]?.lowercase() ?: "${System.currentTimeMillis()}"
                     //编译为kotlin版本
-                    writer = file?.createResource(StandardLocation.SOURCE_OUTPUT, "", "com/practice/router/$className.kt")?.openWriter()
+                    writer = file?.createResource(StandardLocation.SOURCE_OUTPUT, "", "com/practice/router/$moduleName/$className.kt")?.openWriter()
                     writer?.write(StringBuilder().apply {
-                        append("package com.practice.router\n")
+                        append("package com.practice.router.$moduleName\n")
                         append("import com.practice.core.IRouter\n")
                         append("import com.practice.core.ARouter\n")
                         append("public class ${className}: IRouter {\n")
@@ -67,20 +68,20 @@ class RouteProcess : AbstractProcessor() {
                         }
                         append("    }\n}\n")
                     }.toString())
-                    //编译为java版本
-//                    writer = file?.createSourceFile("com.practice.router.$className")?.openWriter()
-//                    writer?.write(StringBuilder().apply {
-//                        append("package com.practice.router;\n")
-//                        append("import com.practice.core.IRouter;\n")
-//                        append("import com.practice.core.ARouter;\n")
-//                        append("public class ${className} implements IRouter {\n")
-//                        append("    @Override\n")
-//                        append("    public void putActivity() {\n")
-//                        for (it in entries) {
-//                            append("        ARouter.getInstance().addActivity(\"${it.key}\",${it.value}.class);\n")
-//                        }
-//                        append("    }\n}\n")
-//                    }.toString())
+                    /*//编译为java版本
+                    writer = file?.createSourceFile("com/practice/router/&moduleName/$className")?.openWriter()
+                    writer?.write(StringBuilder().apply {
+                        append("package com.practice.router.$moduleName\n")
+                        append("import com.practice.core.IRouter;\n")
+                        append("import com.practice.core.ARouter;\n")
+                        append("public class ${className} implements IRouter {\n")
+                        append("    @Override\n")
+                        append("    public void putActivity() {\n")
+                        for (it in entries) {
+                            append("        ARouter.getInstance().addActivity(\"${it.key}\",${it.value}.class);\n")
+                        }
+                        append("    }\n}\n")
+                    }.toString())*/
                 } catch (e: Exception) {
                     e.printStackTrace()
                 } finally {

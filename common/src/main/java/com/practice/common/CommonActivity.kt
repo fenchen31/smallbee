@@ -1,31 +1,23 @@
-package com.practice.smallbee
+package com.practice.common
+
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.databinding.DataBindingUtil
 import com.practice.annotation.Route
-import com.practice.core.ARouter
-import com.practice.smallbee.databinding.ActivityMainBinding
 
-@Route("app/MainActivity")
-class MainActivity : AppCompatActivity() {
-    lateinit var binding: ActivityMainBinding
+@Route("common/CommonActivity")
+class CommonActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
+        setContentView(R.layout.activity_common)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        binding.btnJumpCommon.setOnClickListener({
-            //ARouter.getInstance().jumpActivity("app/TestActivity", null)
-            ARouter.getInstance().jumpActivity("common/CommonActivity", null)
-        })
     }
 }
