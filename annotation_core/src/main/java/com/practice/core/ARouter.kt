@@ -8,6 +8,9 @@ import dalvik.system.DexFile
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
+/**
+ * 路由
+ */
 open class ARouter private constructor() {
     private object Holder{
         val instance = ARouter()
@@ -70,38 +73,6 @@ open class ARouter private constructor() {
                 }
             }
         } catch (e: Exception){
-            e.printStackTrace()
-        }
-        return list
-    }
-
-    fun get(packageName: String): ArrayList<String>{
-        val list = ArrayList<String>()
-        try {
-            val pathListField = Class.forName("dalvik.system.BaseDexClassLoader").getDeclaredField("pathList")
-            pathListField.isAccessible = true
-            val pathList = pathListField.get(context.classLoader)
-
-            val dexElementsField = pathList.javaClass.getDeclaredField("dexElements")
-            dexElementsField.isAccessible = true
-            val dexElements = dexElementsField.get(pathList) as Array<*>
-
-            dexElements.forEach { element ->
-                if (element != null) {
-                    val dexFileField = element.javaClass.getDeclaredField("dexFile")
-                    dexFileField.isAccessible = true
-                    val dexFile = dexFileField.get(element) as DexFile
-
-                    val entries = dexFile.entries()
-                    while (entries.hasMoreElements()) {
-                        val className = entries.nextElement()
-                        if (className.contains(packageName)) {
-                            list.add(className)
-                        }
-                    }
-                }
-            }
-        } catch (e: Exception) {
             e.printStackTrace()
         }
         return list

@@ -13,6 +13,9 @@ import javax.lang.model.SourceVersion
 import javax.lang.model.element.TypeElement
 import javax.tools.StandardLocation
 
+/**
+ * 生成注解代码
+ */
 @AutoService(Processor::class)
 class RouteProcess : AbstractProcessor() {
     var file: Filer? = null
