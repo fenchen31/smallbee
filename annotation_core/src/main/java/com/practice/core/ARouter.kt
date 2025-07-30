@@ -19,15 +19,15 @@ open class ARouter private constructor() {
         @JvmStatic
         fun getInstance():ARouter = Holder.instance
     }
-    lateinit var context:Context
-    lateinit var map: HashMap<String, Class<*>>
+
+    private lateinit var map: HashMap<String, Class<*>>
     fun addActivity(name: String, clazz: Class<*>){
         if(name.isNotBlank() && !map.containsKey(name)){
             map[name] = clazz
         }
     }
 
-    fun jumpActivity(path:String, bundle: Bundle?){
+    fun jumpActivity(context: Context, path:String, bundle: Bundle ?= null){
         try {
             val intent = Intent(context, map[path])
             bundle?.let {
@@ -47,9 +47,8 @@ open class ARouter private constructor() {
 
     fun init(context: Context, packageName: String){
         map = HashMap()
-        this.context = context
         //TODO 1.获取packageName下所有的类
-        val classNames = getCLassName(packageName)
+        val classNames = getCLassName(context,packageName)
         //TODO 2.生成路由表
         classNames.forEach { className ->
             //获取所有的类名，然后判断这个类是否实现了IRouter，是就直接强转并调用它的putActivity()
@@ -61,7 +60,7 @@ open class ARouter private constructor() {
         }
     }
 
-    fun getCLassName(packageName: String): ArrayList<String>{
+    private fun getCLassName(context: Context,packageName: String): ArrayList<String>{
         val list = ArrayList<String>()
         try {
             val dexFile = DexFile(context.packageCodePath)
