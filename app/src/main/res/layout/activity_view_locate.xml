@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.practice.smallbee.viewmodel.ViewLocateVM" />
+        <variable
+            name="event"
+            type="com.practice.smallbee.event.ViewLocateEvent" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activity.ViewLocateActivity">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:id="@+id/view_bg"
+            app:layout_constraintTop_toTopOf="parent"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/color_99FFFFFF"/>
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/iv_girl"
+            android:src="@mipmap/girls1"
+            android:scaleType="fitXY"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="50dp"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/recyclerView"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
