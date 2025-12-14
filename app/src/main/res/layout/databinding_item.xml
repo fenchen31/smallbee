@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.practice.smallbee.viewmodel.DatabindingItemVM" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="10dp">
+        <EditText
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:minWidth="50dp"
+            android:layout_height="match_parent"
+            android:text="@={vm.name}"
+            android:background="@color/color_00BCD4"
+            android:textColor="@color/color_F44336"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:hint="@string/please_input_username"
+            tools:text="用户名"
+            android:padding="5dp"
+            app:layout_constraintStart_toStartOf="parent"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="@={vm.name}"
+            app:layout_constraintStart_toEndOf="@id/tv_name"
+            app:layout_constraintEnd_toStartOf="@id/bt_change_status"
+            android:textColor="@color/color_000000"
+            tools:text="这是和name一样的文字"
+            android:gravity="center"
+            android:textSize="18sp"/>
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:padding="7.5dp"
+            app:layout_constraintEnd_toEndOf="@id/tv_name"
+            app:layout_constraintBottom_toBottomOf="@id/tv_name"
+            android:src="@{vm.online ? @drawable/ic_status_online : @drawable/ic_status_unline}"
+            android:layout_marginBottom="3dp"
+            android:layout_marginEnd="3dp"
+            android:scaleType="fitXY"/>
+        <Button
+            android:id="@+id/bt_change_status"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_user_status"
+            android:text="@string/click_to_change_status"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="18sp"
+            android:onClick="@{()->vm.onOnlineChange()}"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

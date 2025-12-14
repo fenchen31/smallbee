@@ -11,7 +11,7 @@ class TimerHandler {
     private var remainTime = -1
     private var notifyTime = 1
 
-    fun start(second: Int, notifyTime: Int = 1, listener: TimerListener) {
+    fun start(second: Int, notifyTime: Int = 1, listener: TimerListener? = null) {
         this.listener = WeakReference(listener)
         handler = Handler(Looper.getMainLooper())
         remainTime = second

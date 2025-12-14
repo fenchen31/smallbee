@@ -13,12 +13,6 @@ import com.practice.smallbee.databinding.ItemEquityRecordEmptyBinding;
 import com.practice.smallbee.databinding.ItemEquityRecordItemBinding;
 import com.practice.smallbee.databinding.ItemEquityRecordShowMoreBinding;
 import com.practice.smallbee.databinding.ItemEquityRecordTitleBinding;
-import com.practice.smallbee.databinding.ItemGameRecordItemBinding;
-import com.practice.smallbee.databinding.ItemGameRecordShowMoreBinding;
-import com.practice.smallbee.databinding.ItemGameRecordTitleBinding;
-import com.practice.smallbee.databinding.ItemTrafficRecordItemBinding;
-import com.practice.smallbee.databinding.ItemTrafficRecordShowMoreBinding;
-import com.practice.smallbee.databinding.ItemTrafficRecordTitleBinding;
 import com.practice.smallbee.response.GemeEquityRecordBean;
 import com.practice.smallbee.viewholder.CommonHolder;
 
@@ -28,8 +22,8 @@ public class EquityRecordAdapter extends RecyclerView.Adapter<CommonHolder<ViewB
     private static final String TAG = EquityRecordAdapter.class.getSimpleName();
     private GemeEquityRecordBean gamedata;
     private GemeEquityRecordBean trafficData;
-    private int gameShowingCount;
-    private int trafficShowingCount;
+    private int gameShowingCount;//游戏权益大item中不包含title+查看全部item
+    private int trafficShowingCount;//流量权益大item中不包含title+查看全部item
     private boolean isEmpty;
     //这两个count指实际展示的数量（showall时：标题+items，未showall时：标题+items+查看全部item）
     private int gameDataCount;
@@ -48,22 +42,13 @@ public class EquityRecordAdapter extends RecyclerView.Adapter<CommonHolder<ViewB
     public CommonHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         RecordType type = RecordType.values()[viewType];
         switch (type) {
-            case TYPE_GAME_TITLE: {
+            case TYPE_TITLE: {
                 return new CommonHolder<>(ItemEquityRecordTitleBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
             }
-            case TYPE_GAME_ITEM: {
+            case TYPE_ITEM: {
                 return new CommonHolder<>(ItemEquityRecordItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
             }
-            case TYPE_GAME_SHOW_MORE: {
-                return new CommonHolder<>(ItemEquityRecordShowMoreBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
-            }
-            case TYPE_TRAFFIC_TITLE: {
-                return new CommonHolder<>(ItemEquityRecordTitleBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
-            }
-            case TYPE_TRAFFIC_ITEM: {
-                return new CommonHolder<>(ItemEquityRecordItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
-            }
-            case TYPE_TRAFFIC_SHOW_MORE: {
+            case TYPE_SHOW_MORE: {
                 return new CommonHolder<>(ItemEquityRecordShowMoreBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
             }
             case TYPE_EMPTY: {
@@ -76,26 +61,7 @@ public class EquityRecordAdapter extends RecyclerView.Adapter<CommonHolder<ViewB
     @Override
     public void onBindViewHolder(@NonNull CommonHolder holder, int position) {
         ViewBinding viewBinding = holder.getBinding();
-        if (viewBinding instanceof ItemGameRecordTitleBinding){
-            int pos = position - 0;
-            if (judgePosition(gamedata, gameShowAll, pos, gameDataCount, gameShowingCount)) {
-                setTitleData((ItemGameRecordTitleBinding) viewBinding, gamedata);
-                return;
-            }
-        } else if (viewBinding instanceof ItemGameRecordItemBinding){
-
-        } else if (viewBinding instanceof ItemGameRecordShowMoreBinding) {
-
-        } else if (viewBinding instanceof ItemTrafficRecordTitleBinding) {
-
-        } else if (viewBinding instanceof ItemTrafficRecordItemBinding) {
-
-        } else if (viewBinding instanceof ItemTrafficRecordShowMoreBinding) {
-
-        } else if (viewBinding instanceof ItemEquityRecordEmptyBinding) {
-
-        }
-        if (viewBinding instanceof ItemGameRecordTitleBinding) {
+        if (viewBinding instanceof ItemEquityRecordTitleBinding) {
             int pos = position - 0;
             if (judgePosition(gamedata, gameShowAll, pos, gameDataCount, gameShowingCount)) {
                 setTitleData((ItemEquityRecordTitleBinding) viewBinding, gamedata);
@@ -106,13 +72,14 @@ public class EquityRecordAdapter extends RecyclerView.Adapter<CommonHolder<ViewB
                 setTitleData((ItemEquityRecordTitleBinding) viewBinding, trafficData);
             }
         } else if (viewBinding instanceof ItemEquityRecordItemBinding) {
-            int pos = position - 0;
+            //计算position的时候应该减去title
+            int pos = position - 1 - 0;
             Log.e(TAG, "pos:" + pos);
             if (judgePosition(gamedata, gameShowAll, pos, gameDataCount, gameShowingCount)) {
                 setItemData((ItemEquityRecordItemBinding) viewBinding, gamedata.getRecordList().get(pos), pos);
                 return;
             }
-            pos = position - gameDataCount - 0;
+            pos = position - 1 - gameDataCount - 0;
             if (judgePosition(trafficData, trafficShowAll, pos, trafficDataCount, trafficShowingCount)) {
                 setItemData((ItemEquityRecordItemBinding) viewBinding, trafficData.getRecordList().get(pos), pos);
             }
@@ -136,12 +103,13 @@ public class EquityRecordAdapter extends RecyclerView.Adapter<CommonHolder<ViewB
             isEmpty = true;
             return 1;//无数据页
         } else {
+            isEmpty = false;
             return count;
         }
     }
 
     private boolean showAll(int dataSize, int showingCount) {
-        return Math.min(showingCount + oneIncreaseCount, dataSize) == dataSize;
+        return showingCount == dataSize;
     }
 
     private int getItemCount(GemeEquityRecordBean data, int showingCount) {
@@ -170,11 +138,12 @@ public class EquityRecordAdapter extends RecyclerView.Adapter<CommonHolder<ViewB
         }
         int pos = position - 0;
         if (judgePosition(gamedata, gameShowAll, pos, gameDataCount, gameShowingCount)) {
-            return getRecordType(true, gamedata, pos, gameShowAll, gameShowingCount).ordinal();
+            return getRecordType(gamedata, pos, gameShowAll, gameShowingCount).ordinal();
         }
+        //    position - 游戏大item总个数 -   （游戏title + 可能有的展示全部item）  - 游戏前面item个数（这个只是作为保留，方便理解）
         pos = position - gameDataCount - 0;
-        if (judgePosition(trafficData, trafficShowAll, pos - gameDataCount, trafficDataCount, trafficShowingCount)) {
-            return getRecordType(false,trafficData, pos, trafficShowAll, trafficShowingCount).ordinal();
+        if (judgePosition(trafficData, trafficShowAll, pos, trafficDataCount, trafficShowingCount)) {
+            return getRecordType(trafficData, pos, trafficShowAll, trafficShowingCount).ordinal();
         }
         return -1;
     }
@@ -185,20 +154,10 @@ public class EquityRecordAdapter extends RecyclerView.Adapter<CommonHolder<ViewB
             return false;
         }
         boolean showAll = showAll(data.getRecordList().size(), showingCount) || focusShowAll;
-        //超过正在展示的item数时
-        if (itemCount > 1 + showingCount) {
-            if (showAll) {
-                if (position < itemCount) {
-                    return true;
-                }
-            } else {
-                //未showall时：标题+正在展示的item个数+查看更多
-                if (position < 1 + showingCount + 1) {
-                    return true;
-                }
-            }
+        if (showAll) {
+            return position < itemCount;
         } else {
-            if (position < itemCount) {
+            if (position < 1 + showingCount + 1) {
                 return true;
             }
         }
@@ -206,40 +165,49 @@ public class EquityRecordAdapter extends RecyclerView.Adapter<CommonHolder<ViewB
     }
 
     //根据position和showall判断item类型，这个position是当前item在大item中的位置
-    private RecordType getRecordType(boolean game, GemeEquityRecordBean data, int position, boolean focusShowAll, int showingCount) {
+    private RecordType getRecordType(GemeEquityRecordBean data, int position, boolean focusShowAll, int showingCount) {
         if (position == 0) {
-            if (game)
-                return RecordType.TYPE_GAME_TITLE;
-            else
-                return RecordType.TYPE_TRAFFIC_TITLE;
+            return RecordType.TYPE_TITLE;
         }
         boolean showAll = focusShowAll || showAll(data.getRecordList().size(), showingCount);
         if (showAll) {
-            if (game)
-                return RecordType.TYPE_GAME_ITEM;
-            else
-                return RecordType.TYPE_TRAFFIC_ITEM;
+            return RecordType.TYPE_ITEM;
         }
         if (position < 1 + showingCount) {//标题 + 当前展示的小items
-            if (game)
-                return RecordType.TYPE_GAME_ITEM;
-            else
-                return RecordType.TYPE_TRAFFIC_ITEM;
+            return RecordType.TYPE_ITEM;
         } else {
-            if (game)
-                return RecordType.TYPE_GAME_SHOW_MORE;
-            else
-                return RecordType.TYPE_TRAFFIC_SHOW_MORE;
+            return RecordType.TYPE_SHOW_MORE;
         }
-
     }
 
-    private void setGameTitleData(ItemGameRecordTitleBinding b, GemeEquityRecordBean data) {
+    public boolean judgeLeft(int position) {
+        int pos = position - 0;
+        if (judgePosition(gamedata, gameShowAll, pos, gameDataCount, gameShowingCount)) {
+            return isLeft(gamedata, pos, gameShowAll, gameShowingCount);
+        }
+        //    position - 游戏大item总个数 -   （游戏title + 可能有的展示全部item）  - 游戏前面item个数（这个只是作为保留，方便理解）
+        pos = position - gameDataCount - 0;
+        if (judgePosition(trafficData, trafficShowAll, pos, trafficDataCount, trafficShowingCount)) {
+            return isLeft(trafficData, pos, trafficShowAll, trafficShowingCount);
+        }
+        return false;
+    }
+
+    private boolean isLeft(GemeEquityRecordBean data, int position, boolean focusShowAll, int showingCount) {
+        boolean showAll = focusShowAll || showAll(data.getRecordList().size(), showingCount);
+        if (showAll) {
+            return (position - 1) % 2 == 0;
+        }
+        if (position < 1 + showingCount) {//标题 + 当前展示的小items
+            return (position - 1) % 2 == 0;
+        }
+        return false;
+    }
+
+    private void setTitleData(ItemEquityRecordTitleBinding b, GemeEquityRecordBean data) {
         b.tvText.setText(TextUtils.isEmpty(data.getName()) ? "" : data.getName());
     }
-    private void setTrafficTitleData(ItemGameRecordTitleBinding b, GemeEquityRecordBean data) {
-        b.tvText.setText(TextUtils.isEmpty(data.getName()) ? "" : data.getName());
-    }
+
     private void setItemData(ItemEquityRecordItemBinding b, GemeEquityRecordBean.RecordBean data, int position) {
         b.tvIncreaseMinutes.setText(TextUtils.isEmpty(data.getValidityPeriodDuration()) ? "" : data.getValidityPeriodDuration());
         b.tvName.setText(TextUtils.isEmpty(data.getName()) ? "" : data.getName());
@@ -286,19 +254,32 @@ public class EquityRecordAdapter extends RecyclerView.Adapter<CommonHolder<ViewB
 
     public void setGamedata(GemeEquityRecordBean gamedata) {
         this.gamedata = gamedata;
+        if (gamedata == null || gamedata.getRecordList() == null || gamedata.getRecordList().size() <= 0) {
+            gameShowingCount = 0;
+        } else if (gamedata.getRecordList().size() < 4) {
+            gameShowingCount = gamedata.getRecordList().size();
+        } else {
+            gameShowingCount = 4;
+        }
+        notifyDataSetChanged();
     }
 
     public void setTrafficData(GemeEquityRecordBean trafficData) {
         this.trafficData = trafficData;
+        if (trafficData == null || trafficData.getRecordList() == null || trafficData.getRecordList().size() <= 0) {
+            trafficShowingCount = 0;
+        } else if (trafficData.getRecordList().size() < 4) {
+            trafficShowingCount = trafficData.getRecordList().size();
+        } else {
+            trafficShowingCount = 4;
+        }
+        notifyDataSetChanged();
     }
 
-    enum RecordType {
-        TYPE_GAME_TITLE,//游戏权益标题
-        TYPE_TRAFFIC_TITLE,//流量权益标题
-        TYPE_GAME_ITEM,//游戏ITEM内容
-        TYPE_TRAFFIC_ITEM,//流量ITEM内容
-        TYPE_GAME_SHOW_MORE,//游戏查看更多
-        TYPE_TRAFFIC_SHOW_MORE,//流量查看更多
+    public enum RecordType {
+        TYPE_TITLE,//权益标题
+        TYPE_ITEM,//ITEM内容
+        TYPE_SHOW_MORE,//查看更多
         TYPE_EMPTY//空数据
     }
 }

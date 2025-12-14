@@ -1,4 +1,4 @@
-package com.practice.smallbee
+package com.practice.smallbee.application
 
 import android.app.Application
 import com.practice.core.ARouter

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="10dp"
+        android:layout_margin="1dp"
+        android:src="@drawable/shape_radius25_color4caf50"
+        android:layout_height="10dp">
+
+    </FrameLayout>
+</layout>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_DB3A3A" >#DB3A3A</color>
+    <color name="color_000000" >#000000</color>
+    <color name="color_2196F3" >#2196F3</color>
+    <color name="color_FFC107" >#FFC107</color>
+    <color name="color_4CAF50" >#4CAF50</color>
+    <color name="color_6E6F6E" >#6E6F6E</color>
+    <color name="color_FF9800" >#FF9800</color>
+</resources>

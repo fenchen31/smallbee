@@ -5,15 +5,90 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:id="@+id/main"
+        android:gravity="center_horizontal"
         android:layout_height="match_parent">
-
-        <TextView
+        <com.practice.common.view.SquareImageView
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:background="@color/color_4CAF50"
+            android:id="@+id/siv"
+            android:src="@mipmap/girls1"
+            android:scaleType="fitXY"/>
+        <com.practice.common.view.CircleView
+            android:layout_width="300dp"
+            android:layout_height="150dp"/>
+        <com.practice.common.view.CakeView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:visibility="gone"
+            android:gravity="center" />
+        <com.practice.common.view.DashBoardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/this_is_commonactivity" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="300dp"/>
+        <com.practice.common.view.AvatarView
+            android:id="@+id/av_bitmap"
+            android:layout_width="100dp"
+            android:visibility="gone"
+            android:layout_height="100dp"/>
+        <com.practice.common.view.RingView
+            android:visibility="gone"
+            android:background="@color/color_6E6F6E"
+            android:layout_width="200dp"
+            android:layout_height="150dp"/>
+        <com.practice.common.view.MultiTextView
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"/>
+        <ImageView
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:src="@mipmap/thumb07"
+            android:scaleType="fitXY"
+            android:visibility="gone"
+            android:layout_width="500dp"
+            android:layout_height="500dp"/>
+        <com.practice.common.view.ClipView
+            android:background="@color/color_4CAF50"
+            android:layout_width="400dp"
+            android:padding="10dp"
+            android:id="@+id/cl_rotation"
+            android:layout_height="500dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal">
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="X旋转"
+                android:id="@+id/bt_x"
+                android:textSize="20sp"
+                android:background="@null"/>
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Y旋转"
+                android:id="@+id/bt_y"
+                android:textSize="20sp"
+                android:background="@null"/>
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Z旋转"
+                android:id="@+id/bt_z"
+                android:textSize="20sp"
+                android:background="@null"/>
+        </LinearLayout>
+        <com.practice.common.view.CameraView
+            android:layout_width="200dp"
+            android:visibility="gone"
+            android:layout_height="200dp"/>
+    </LinearLayout>
 </layout>

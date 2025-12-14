@@ -33,14 +33,17 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = config.get("sourceCompatibility") as JavaVersion
-        targetCompatibility = config.get("targetCompatibility") as JavaVersion
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = config.get("jvmTarget") as String
+        jvmTarget = "11"
     }
     dataBinding{
         enable = config.get("dataBinding") as Boolean
+    }
+    buildFeatures {
+        viewBinding = true
     }
 }
 
@@ -50,8 +53,17 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
     kapt(project(":annotation_compiler"))
     implementation(project(":annotation_core"))
     implementation(project(":annotation"))
-    implementation(project(":common"))
+    api(project(":common"))
+
+    //上拉加载下拉刷新
+    implementation  (libs.refresh.layout.kernel)      //核心必须依赖
+    implementation  (libs.scwang90.refresh.header.classics)    //经典刷新头
+    implementation  (libs.refresh.footer.classics)    //经典加载
 }

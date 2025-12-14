@@ -48,4 +48,7 @@ dependencies {
     kapt(project(":annotation_compiler"))
     implementation(project(":annotation_core"))
     implementation(project(":annotation"))
+    api(libs.retrofit)
+    api(libs.gson)
+    api(libs.okhttp)
 }

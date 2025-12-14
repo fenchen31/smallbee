@@ -1,4 +1,4 @@
-package com.practice.smallbee
+package com.practice.smallbee.activity
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.practice.annotation.Route
+import com.practice.smallbee.R
 
 @Route("app/TestActivity")
 class TestActivity : AppCompatActivity() {
