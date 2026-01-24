@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="300dp"
+        android:layout_gravity="center"
+        android:background="@drawable/corner120_d00bcd4"
+        android:layout_height="300dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/service_from_where"
+            android:gravity="center"
+            android:id="@+id/tv_text"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
