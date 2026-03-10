@@ -9,14 +9,14 @@ import android.graphics.RectF
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.MotionEvent
-import android.view.View
+import android.widget.EditText
 import androidx.appcompat.content.res.AppCompatResources
 import com.practice.common.R
 import com.practice.common.util.dp
 
 class SearchView @JvmOverloads constructor(
     context: Context, attributeSet: AttributeSet? = null, defAttr: Int = 0
-) : View(context, attributeSet, defAttr) {
+) : EditText(context, attributeSet, defAttr) {
 
     private val paint: Paint
     private var topLeftRadius: Float
@@ -73,6 +73,7 @@ class SearchView @JvmOverloads constructor(
             style = Paint.Style.STROKE
             flags = Paint.ANTI_ALIAS_FLAG
         }
+        isFocusableInTouchMode = true
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -138,16 +139,12 @@ class SearchView @JvmOverloads constructor(
                     Rect(paddingStart, paddingTop, width - paddingEnd, height - paddingBottom)
                 if (viewRect.contains(event.x.toInt(), event.y.toInt())) {
                     val rect = emplifyRect(iconFinalRect, 15f)
-                    if (onIconClickListener != null && iconVisible && iconPressed && rect.contains(
-                            event.x,
-                            event.y
-                        )
+                    if (onIconClickListener != null && iconVisible && iconPressed
+                        && rect.contains(event.x, event.y)
                     ) {
                         onIconClickListener?.invoke()
-                    } else {
-                        performClick()
+                        return true
                     }
-                    return true
                 }
                 iconPressed = false
             }
