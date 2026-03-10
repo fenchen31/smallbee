@@ -2,10 +2,12 @@ package com.practice.common.view
 
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.LinearGradient
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.Rect
 import android.graphics.RectF
+import android.graphics.Shader
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.MotionEvent
@@ -39,6 +41,9 @@ class SearchView @JvmOverloads constructor(
         }
     private var iconPressed = false
     var onIconClickListener: (() -> Unit)? = null
+    private val lineStartColor: Int
+    private val lineEndColor: Int
+    private lateinit var lineGradient: LinearGradient
 
     init {
         val typeArray =
@@ -63,12 +68,13 @@ class SearchView @JvmOverloads constructor(
                 iconSize = getDimension(R.styleable.SearchView_iconSize, 3f.dp)
                 iconPadding = getDimension(R.styleable.SearchView_iconPadding, 3f.dp)
                 iconVisible = getBoolean(R.styleable.SearchView_iconVisible, true)
+                lineStartColor = getColor(R.styleable.SearchView_lineStartColor, lineColor)
+                lineEndColor = getColor(R.styleable.SearchView_lineEndColor, lineColor)
             }
         } finally {
             typeArray.recycle()
         }
         paint = Paint().apply {
-            color = lineColor
             strokeWidth = lineWidth
             style = Paint.Style.STROKE
             flags = Paint.ANTI_ALIAS_FLAG
@@ -82,14 +88,21 @@ class SearchView @JvmOverloads constructor(
         avaiableHeight = h - paddingTop - paddingBottom
         initLinePath(w, h)
         initIcon(w, h)
+        setPaddingRelative(
+            paddingStart,
+            paddingTop,
+            (iconPadding + paddingEnd + iconSize + iconPadding).toInt(),
+            paddingBottom
+        )
     }
 
     private fun initLinePath(w: Int, h: Int) {
+        val halfLineWidth = lineWidth / 2
         val rect = RectF(
-            paddingStart.toFloat(),
-            paddingTop.toFloat(),
-            (w - paddingEnd).toFloat(),
-            (h - paddingBottom).toFloat()
+            paddingStart.toFloat() + halfLineWidth,
+            paddingTop.toFloat() + halfLineWidth,
+            (w - paddingEnd).toFloat() - halfLineWidth,
+            (h - paddingBottom).toFloat() - halfLineWidth
         )
         val roundRect = floatArrayOf(
             topLeftRadius, topLeftRadius,
@@ -99,6 +112,10 @@ class SearchView @JvmOverloads constructor(
         )
         path.reset()
         path.addRoundRect(rect, roundRect, Path.Direction.CW)
+        lineGradient = LinearGradient(
+            rect.left, rect.top, rect.right, rect.bottom,
+            lineStartColor, lineEndColor, Shader.TileMode.CLAMP
+        )
     }
 
     private fun initIcon(w: Int, h: Int) {
@@ -116,7 +133,7 @@ class SearchView @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         if (lineWidth > 0f) {
-            drawRoundRect(canvas, path)
+            drawFrame(canvas, path)
         }
         if (iconVisible) {
             iconResource.bounds = iconFinalRect
@@ -162,10 +179,13 @@ class SearchView @JvmOverloads constructor(
         )
     }
 
-    private fun drawRoundRect(canvas: Canvas, path: Path) {
+    private fun drawFrame(canvas: Canvas, path: Path) {
+        paint.reset()
         paint.color = lineColor
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = lineWidth
+        paint.shader = lineGradient
         canvas.drawPath(path, paint)
+        paint.shader = null
     }
 }
