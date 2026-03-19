@@ -75,8 +75,9 @@ class MultiTextView @JvmOverloads constructor(
         var startY = -fontMetrics.top + paddingTop//文字上边界 + paddingTop = 起始y
         while (start < text.length) {
             when {
-                startY + fontMetrics.bottom < pictureTop || startY + fontMetrics.top > pictureTop + bitmap.height ->
+                startY +  fontMetrics.bottom < pictureTop || startY + fontMetrics.top > pictureTop + bitmap.height ->
                     maxWidth = (width - paddingStart - paddingEnd).toFloat()
+
                 else -> maxWidth = width - paddingStart - paddingEnd - bitmapTargetWidth
             }
             end = textPaint.breakText(text, start, text.length, true, maxWidth, null)

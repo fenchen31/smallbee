@@ -38,8 +38,7 @@ class RouteProcess : AbstractProcessor() {
     }
 
     override fun process(
-        set: MutableSet<out TypeElement>?,
-        environment: RoundEnvironment?
+        set: MutableSet<out TypeElement>?, environment: RoundEnvironment?
     ): Boolean {
         //TODO 3.注解逻辑
         //1.获取所有被特定注解处理器（Route）修饰的类
@@ -57,9 +56,14 @@ class RouteProcess : AbstractProcessor() {
                 val className = "RouterUtil"
                 var writer: Writer? = null
                 try {
-                    val moduleName = processingEnv.options["MODULE_NAME"]?.lowercase() ?: "${System.currentTimeMillis()}"
+                    val moduleName = processingEnv.options["MODULE_NAME"]?.lowercase()
+                        ?: "${System.currentTimeMillis()}"
                     //编译为kotlin版本
-                    writer = file?.createResource(StandardLocation.SOURCE_OUTPUT, "", "com/practice/router/$moduleName/$className.kt")?.openWriter()
+                    writer = file?.createResource(
+                        StandardLocation.SOURCE_OUTPUT,
+                        "",
+                        "com/practice/router/$moduleName/$className.kt"
+                    )?.openWriter()
                     writer?.write(StringBuilder().apply {
                         append("package com.practice.router.$moduleName\n")
                         append("import com.practice.core.IRouter\n")
@@ -70,8 +74,7 @@ class RouteProcess : AbstractProcessor() {
                             append("        ARouter.getInstance().addActivity(\"${it.key}\",${it.value}::class.java)\n")
                         }
                         append("    }\n}\n")
-                    }.toString())
-                    /*//编译为java版本
+                    }.toString())/*//编译为java版本
                     writer = file?.createSourceFile("com/practice/router/&moduleName/$className")?.openWriter()
                     writer?.write(StringBuilder().apply {
                         append("package com.practice.router.$moduleName\n")

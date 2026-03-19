@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SearchView">
+        <attr name="radius" format="dimension"/><!--边框radius-->
+        <attr name="topLeftRadius" format="dimension"/>
+        <attr name="topRightRadius" format="dimension"/>
+        <attr name="bottomRightRadius" format="dimension"/>
+        <attr name="bottomLeftRadius" format="dimension"/>
+        <attr name="lineColor" format="color"/><!--边框颜色，当存在渐变颜色时，优先使用渐变颜色-->
+        <attr name="lineWidth" format="dimension"/><!--边框宽度-->
+        <attr name="iconResource" format="reference"/><!--icon资源-->
+        <attr name="iconPadding" format="dimension"/><!--icon右侧和view的间距-->
+        <attr name="iconSize" format="dimension"/><!--icon大小-->
+        <attr name="iconVisible" format="boolean"/><!--icon是否可见-->
+        <attr name="lineStartColor" format="color"/><!--渐变边框开始颜色-->
+        <attr name="lineEndColor" format="color"/><!--渐变边框结束颜色-->
+    </declare-styleable>
+</resources>

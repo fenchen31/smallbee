@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     kotlin("kapt")
+    alias(libs.plugins.kotlin.compose)
 }
 val config = rootProject.extra.get("android") as? Map<*, *>
 val version = rootProject.extra.get("version") as? Map<*, *>
@@ -11,10 +12,10 @@ android {
 
     defaultConfig {
         applicationId = "com.practice.smallbee"
-        minSdk = config.get("minSdk") as Int
-        targetSdk = config.get("targetSdk") as Int
-        versionCode = config.get("versionCode") as Int
-        versionName = config.get("versionName") as String
+        minSdk = config["minSdk"] as Int
+        targetSdk = config["targetSdk"] as Int
+        versionCode = config["versionCode"] as Int
+        versionName = config["versionName"] as String
         javaCompileOptions {
             annotationProcessorOptions {
                 //路由跳转配置
@@ -25,7 +26,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = config.get("isMinifyEnabled") as Boolean
+            isMinifyEnabled = config["isMinifyEnabled"] as Boolean
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -39,11 +40,11 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-    dataBinding{
-        enable = config.get("dataBinding") as Boolean
-    }
+
     buildFeatures {
         viewBinding = true
+        dataBinding = config["dataBinding"] as Boolean
+        compose = true
     }
 }
 
@@ -57,6 +58,15 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
     kapt(project(":annotation_compiler"))
     implementation(project(":annotation_core"))
     implementation(project(":annotation"))

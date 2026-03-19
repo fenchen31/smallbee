@@ -11,6 +11,8 @@ class MediaSessionVM:ViewModel() {
     val mediaInfoPermission = MutableLiveData<Boolean>()
     val packageUsagePermission = MutableLiveData<Boolean>()
     val mediaInfo = MutableLiveData<MediaSessionUtil.MediaInfo?>()
+    val notifycationPermission = MutableLiveData<Boolean>()
+
 
     fun initMediaInfo(context: Context) {
         if (mediaInfoPermission.value == true && packageUsagePermission.value == true) {
@@ -21,5 +23,9 @@ class MediaSessionVM:ViewModel() {
                 }
             })
         }
+    }
+
+    fun checkNotifycationPermission(context: Context) {
+        //notifycationPermission.value = MediaSessionUtil.instance.checkNotifycationPermission(context)
     }
 }

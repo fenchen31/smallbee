@@ -13,23 +13,28 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.practice.annotation.Route
+import com.practice.common.base.BaseActivity
 import com.practice.core.ARouter
 import com.practice.smallbee.R
+import com.practice.smallbee.adapter.ChooseJumpAdapter
 import com.practice.smallbee.databinding.ActivityMainBinding
 import com.practice.smallbee.view.GalleryAdapter
 import com.practice.smallbee.view.GalleryTransformer
+import com.practice.smallbee.viewmodel.MainViewModel
 import kotlin.math.abs
 
 @Route("app/MainActivity")
-class MainActivity : AppCompatActivity() {
-    lateinit var binding: ActivityMainBinding
+class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
+    private val viewmodel by lazy { ViewModelProvider(this)[MainViewModel::class.java] }
     var startX = 0f
     var startY = 0f
     var isScroll = false
     val TAG = "scrollEvent"
     var touchSlop: Int = 0
+    private val adapter by lazy {ChooseJumpAdapter()}
     val data = arrayListOf(
         R.mipmap.thumb01,
         R.mipmap.thumb02,
@@ -45,21 +50,26 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+
         binding.root.setOnClickListener({
-            ARouter.getInstance().jumpActivity(this,"common/CommonActivity", null)
+            ARouter.getInstance().jumpActivity(this,"app/DeviceUpdateActivity", null)
             //ARouter.getInstance().jumpActivity(this, "app/DatabindingActivity", null)
         })
         binding.dash.setOnClickListener { startActivity(Intent(this, BindingRecyclerviewActivity::class.java)) }
-        binding.testv.setOnClickListener { ARouter.getInstance().jumpActivity(this, "app/CoordinatorLayoutActivity") }
+        binding.testv.setOnClickListener { ARouter.getInstance().jumpActivity(this, "app/DeviceUpdateActivity") }
         touchSlop = ViewConfiguration.get(this).scaledTouchSlop
         setViewPager()
+    }
+
+    override fun initView() {
+        binding.adapter = adapter
+        viewmodel.jumpData.observe(this) {
+            adapter.data = (it)
+        }
+    }
+
+    override fun loadData() {
+        viewmodel.initData()
     }
 
     fun setViewPager() {

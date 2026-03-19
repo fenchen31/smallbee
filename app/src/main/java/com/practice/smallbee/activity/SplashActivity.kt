@@ -30,7 +30,7 @@ class SplashActivity : AppCompatActivity() {
         }
         viewmodel.data.observe(this){
             if (it.data.isNotBlank()){
-                ARouter.getInstance().jumpActivity(this, "app/MessageCenterActivity")
+                ARouter.getInstance().jumpActivity(this, "app/TestActivity")
                 finish()
             }
         }

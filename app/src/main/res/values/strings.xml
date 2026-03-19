@@ -29,4 +29,8 @@
     <string name="load_more">加载更多</string>
     <string name="this_is_content">这是内容</string>
     <string name="no_message">没有消息</string>
+    <string name="title_activity_device_update">DeviceUpdateActivity</string>
+    <string name="show_dialog">显示dialog</string>
+    <string name="get_media_info">获取媒体信息</string>
+    <string name="notifycation_type_get_media_info">notifycation方式获取</string>
 </resources>

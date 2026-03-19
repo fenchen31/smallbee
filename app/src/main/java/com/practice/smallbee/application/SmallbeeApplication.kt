@@ -1,6 +1,7 @@
 package com.practice.smallbee.application
 
 import android.app.Application
+import com.practice.common.util.MediaSessionUtil
 import com.practice.core.ARouter
 
 class SmallbeeApplication: Application() {

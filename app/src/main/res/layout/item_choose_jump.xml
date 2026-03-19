@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.practice.smallbee.viewmodel.ItemChooseJumpVM" />
+        <variable
+            name="context"
+            type="android.content.Context" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@{viewmodel.text}"
+            android:textColor="@color/color_FFFFFF"
+            android:background="@color/color_8BC34A"
+            android:layout_margin="5dp"
+            tools:text="跳转界面"
+            android:onClick="@{() -> viewmodel.clickItem(context)}"
+            android:textSize="16sp" />
+    </FrameLayout>
+</layout>

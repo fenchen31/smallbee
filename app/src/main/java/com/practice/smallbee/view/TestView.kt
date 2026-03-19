@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
+import android.view.ViewGroup
 
 class TestView : View {
     lateinit var paint : Paint
@@ -17,7 +18,9 @@ class TestView : View {
             style = Paint.Style.STROKE
             strokeWidth = 20f
         }
-
+        val pa = layoutParams
+        layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
+        layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
     }
 
     override fun onDraw(canvas: Canvas) {

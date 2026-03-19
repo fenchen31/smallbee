@@ -7,4 +7,8 @@ class MediaSessionEvent {
     fun clickGetMediaInfo(vm: MediaSessionVM) {
         vm.checkPermission.value = true
     }
+
+    fun clickNotifycationType(vm: MediaSessionVM){
+        vm.notifycationPermission.value = true
+    }
 }

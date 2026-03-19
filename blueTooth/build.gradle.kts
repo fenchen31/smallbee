@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    kotlin("kapt")
 }
 val config = rootProject.extra.get("android") as? Map<*, *>
 val version = rootProject.extra.get("version") as? Map<*, *>
@@ -45,11 +44,4 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    kapt(project(":annotation_compiler"))
-    implementation(project(":annotation_core"))
-    implementation(project(":annotation"))
-    api(libs.retrofit)
-    api(libs.gson)
-    api(libs.okhttp)
-    api (libs.glide)
 }

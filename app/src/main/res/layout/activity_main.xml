@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="adapter"
+            type="com.practice.smallbee.adapter.ChooseJumpAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,6 +20,7 @@
             android:layout_width="100dp"
             android:id="@+id/testv"
             android:layout_height="100dp"
+            android:visibility="invisible"
             android:background="@color/color_ABABAB"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -52,6 +55,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:text="sdu"
             android:textSize="28sp"
+            android:visibility="invisible"
             android:layout_marginTop="32dp"
             android:background="@drawable/corner12_df6f6f8_n202a35"
             android:textColor="@color/color_6E6F6E"
@@ -63,5 +67,12 @@
             android:layout_marginEnd="47dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="vertical"
+            app:adapter="@{adapter}"
+            android:id="@+id/recyclerView"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
