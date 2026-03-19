@@ -1,0 +1,62 @@
+package com.practice.common.base
+
+import android.os.Build
+import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.annotation.LayoutRes
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.Fragment
+
+private const val DATA = "data"
+
+abstract class BaseFragment<B : ViewDataBinding>(@LayoutRes val layoutId: Int) : Fragment() {
+
+    open lateinit var binding: B
+    private var argumentsMap: HashMap<String, Any>? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        argumentsMap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arguments?.getSerializable(DATA, HashMap::class.java) as HashMap<String, Any>?
+        } else {
+            arguments?.getSerializable(DATA) as HashMap<String, Any>?
+        }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
+        binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView(argumentsMap)
+        initData()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding.unbind()
+    }
+
+    abstract fun initView(arguments : HashMap<String, Any>? = null)
+    abstract fun initData()
+
+    companion object {
+        fun <T : BaseFragment<ViewDataBinding>> newInstance(
+            clazz: Class<T>, data: HashMap<String, Any>? = null
+        ): T {
+            val fragment = clazz.getDeclaredConstructor().newInstance() as T
+            fragment.arguments?.apply {
+                putSerializable(DATA, data)
+            }
+            return fragment
+        }
+    }
+}

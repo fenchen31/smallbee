@@ -26,6 +26,11 @@ abstract class BaseActivity<Binding : ViewDataBinding>(@LayoutRes val layoutId: 
         loadData()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.unbind()
+    }
+
     abstract fun initView()
     abstract fun loadData()
 }
