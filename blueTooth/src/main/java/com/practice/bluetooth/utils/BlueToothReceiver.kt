@@ -15,7 +15,7 @@ import com.practice.common.base.BaseCallback
 
 class BlueToothReceiver : BroadcastReceiver() {
 
-    private var callback: BaseCallback<DeviceResponse>? = null
+    private var callback: BaseCallback<BluetoothDevice>? = null
     private var discoverCallback: DiscoverCallback? = null
 
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -34,21 +34,15 @@ class BlueToothReceiver : BroadcastReceiver() {
             intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
         }
         if (devices != null) {
-            callback?.onSuccess(DeviceResponse(devices.address ?: "未知设备", getType(devices.bluetoothClass)))
+            callback?.onSuccess(devices)
         } else {
             callback?.onFailure()
         }
     }
 
-    private fun getType(bluetoothClass: BluetoothClass?): Int {
-        return when(bluetoothClass?.deviceClass) {
-            Major.PHONE -> R.drawable.ic_phone
-            Major.COMPUTER -> R.drawable.ic_desktop
-            else -> R.drawable.ic_laptop
-        }
-    }
 
-    fun setDeviceMessageCallback(callback: BaseCallback<DeviceResponse>) {
+
+    fun setDeviceMessageCallback(callback: BaseCallback<BluetoothDevice>) {
         this.callback = callback
     }
 

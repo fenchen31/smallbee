@@ -12,6 +12,7 @@ import com.practice.blueTooth.R
 import com.practice.blueTooth.databinding.FragmentScanBinding
 import com.practice.bluetooth.adapter.DeviceAdapter
 import com.practice.bluetooth.event.ScanEvent
+import com.practice.bluetooth.utils.BlueToothUtil
 import com.practice.bluetooth.viewmodel.ScanViewModel
 import com.practice.common.base.BaseFragment
 
@@ -47,6 +48,7 @@ class ScanFragment : BaseFragment<FragmentScanBinding>(R.layout.fragment_scan) {
     override fun initView(arguments: HashMap<String, Any>?) {
         initPermission()
         viewModel.init(requireContext())
+        adapter.clickItem = { viewModel.doNext(BlueToothUtil.Step.CONNECT_DEVICE, it)}
         initObservable()
     }
 
@@ -55,7 +57,7 @@ class ScanFragment : BaseFragment<FragmentScanBinding>(R.layout.fragment_scan) {
             if (it) permissionLauncher.launch(permissions)
         }
         viewModel.openBlueToothAndLocation.observe(viewLifecycleOwner) {
-            if (it && hasBlueToothAndLocationOpen()) viewModel.doNext(ScanViewModel.Step.START_SCAN)
+            if (it && hasBlueToothAndLocationOpen()) viewModel.doNext(BlueToothUtil.Step.START_SCAN)
         }
         viewModel.deviceResponse.observe(viewLifecycleOwner) {
             if (it.isNotEmpty()) {
@@ -100,7 +102,7 @@ class ScanFragment : BaseFragment<FragmentScanBinding>(R.layout.fragment_scan) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                         locationLauncher.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
                     } else {
-                        viewModel.doNext(ScanViewModel.Step.OPEN_BLUETOOTH_LOCATION)
+                        viewModel.doNext(BlueToothUtil.Step.OPEN_BLUETOOTH_LOCATION)
                     }
                 } else {
                     val builder = StringBuilder()
@@ -132,7 +134,7 @@ class ScanFragment : BaseFragment<FragmentScanBinding>(R.layout.fragment_scan) {
         locationLauncher =
             registerForActivityResult(ActivityResultContracts.RequestPermission(), { result ->
                 if (result) {
-                    viewModel.doNext(ScanViewModel.Step.OPEN_BLUETOOTH_LOCATION)
+                    viewModel.doNext(BlueToothUtil.Step.OPEN_BLUETOOTH_LOCATION)
                 } else {
                     Toast.makeText(
                         requireContext(),

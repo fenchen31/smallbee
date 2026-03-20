@@ -2,9 +2,10 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+        <import type="java.util.Objects"/>
         <variable
             name="data"
-            type="com.practice.bluetooth.response.DeviceResponse" />
+            type="android.bluetooth.BluetoothDevice" />
     </data>
 
     <LinearLayout
@@ -24,7 +25,7 @@
             android:paddingStart="10dp"
             android:layout_gravity="center_vertical"
             android:textColor="@color/color_6E6F6E"
-            android:text="@{data.name}"
+            android:text="@{data.name != null ? data.name : @string/unknow_device}"
             android:textSize="10sp"/>
     </LinearLayout>
 </layout>

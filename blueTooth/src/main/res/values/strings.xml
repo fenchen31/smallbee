@@ -7,4 +7,5 @@
     <string name="please_open_network">请打开网络</string>
     <string name="please_give_location_permission">请赋予定位权限</string>
     <string name="please_give_blueTooth_permission">请赋予蓝牙权限</string>
+    <string name="unknow_device">未知设备</string>
 </resources>
