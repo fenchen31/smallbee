@@ -4,7 +4,8 @@
         <item name="minHeight">0dp</item>
         <item name="minWidth">0dp</item>
         <item name="android:padding">0dp</item>
-        <item name="backgroundTint">@null</item>
+        <!--<item name="backgroundTint">@android:color/transparent</item>   设置背景，但是优先级要高于xml中的属性，所以去掉
+        <item name="android:background">@android:color/transparent</item>-->
         <item name="cornerRadius">0dp</item>
         <item name="iconPadding">0dp</item>
         <item name="strokeWidth">0dp</item>

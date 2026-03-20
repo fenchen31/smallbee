@@ -1,0 +1,10 @@
+<resources>
+    <string name="start_scan">开始扫描</string>
+    <string name="stop_scan">停止扫描</string>
+    <string name="device_does_not_support_bluetooth">设备不支持蓝牙</string>
+    <string name="please_open_bluetooth">请打开蓝牙</string>
+    <string name="please_open_location">请打开定位</string>
+    <string name="please_open_network">请打开网络</string>
+    <string name="please_give_location_permission">请赋予定位权限</string>
+    <string name="please_give_blueTooth_permission">请赋予蓝牙权限</string>
+</resources>

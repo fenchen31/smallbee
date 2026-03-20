@@ -1,11 +1,13 @@
 package com.practice.smallbee.activity
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.practice.annotation.Route
+import com.practice.bluetooth.activity.BlueToothActivity
 import com.practice.core.ARouter
 import com.practice.smallbee.R
 import com.practice.smallbee.databinding.ActivitySplashBinding
@@ -30,7 +32,8 @@ class SplashActivity : AppCompatActivity() {
         }
         viewmodel.data.observe(this){
             if (it.data.isNotBlank()){
-                ARouter.getInstance().jumpActivity(this, "app/TestActivity")
+                startActivity(Intent(this, BlueToothActivity::class.java))
+                //ARouter.getInstance().jumpActivity(this, "app/TestActivity")
                 finish()
             }
         }

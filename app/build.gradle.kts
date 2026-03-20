@@ -71,6 +71,7 @@ dependencies {
     implementation(project(":annotation_core"))
     implementation(project(":annotation"))
     api(project(":common"))
+    implementation(project(":blueTooth"))
 
     //上拉加载下拉刷新
     implementation  (libs.refresh.layout.kernel)      //核心必须依赖

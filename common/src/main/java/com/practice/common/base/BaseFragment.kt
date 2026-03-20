@@ -2,7 +2,6 @@ package com.practice.common.base
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,13 +30,14 @@ abstract class BaseFragment<B : ViewDataBinding>(@LayoutRes val layoutId: Int) :
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
+        initBinding()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView(argumentsMap)
-        initData()
+
     }
 
     override fun onDestroyView() {
@@ -45,15 +45,16 @@ abstract class BaseFragment<B : ViewDataBinding>(@LayoutRes val layoutId: Int) :
         binding.unbind()
     }
 
-    abstract fun initView(arguments : HashMap<String, Any>? = null)
-    abstract fun initData()
+    abstract fun initBinding()//设置xml中的变量
 
-    companion object {
-        fun <T : BaseFragment<ViewDataBinding>> newInstance(
+    abstract fun initView(arguments : HashMap<String, Any>? = null)
+
+    companion object{
+        fun <T :BaseFragment<out ViewDataBinding>> newInstance(
             clazz: Class<T>, data: HashMap<String, Any>? = null
         ): T {
             val fragment = clazz.getDeclaredConstructor().newInstance() as T
-            fragment.arguments?.apply {
+            fragment.arguments = Bundle().apply {
                 putSerializable(DATA, data)
             }
             return fragment
