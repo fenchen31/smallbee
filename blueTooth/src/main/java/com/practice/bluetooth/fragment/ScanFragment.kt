@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import com.practice.blueTooth.R
 import com.practice.blueTooth.databinding.FragmentScanBinding
+import com.practice.bluetooth.adapter.DeviceAdapter
 import com.practice.bluetooth.event.ScanEvent
 import com.practice.bluetooth.viewmodel.ScanViewModel
 import com.practice.common.base.BaseFragment
@@ -35,14 +36,17 @@ class ScanFragment : BaseFragment<FragmentScanBinding>(R.layout.fragment_scan) {
     }
     private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
     private lateinit var locationLauncher: ActivityResultLauncher<String>
+    private val adapter by lazy { DeviceAdapter(R.layout.item_device) }
 
     override fun initBinding() {
         binding.event = event
         binding.vm = viewModel
+        binding.adapter = adapter
     }
 
     override fun initView(arguments: HashMap<String, Any>?) {
         initPermission()
+        viewModel.init(requireContext())
         initObservable()
     }
 
@@ -52,6 +56,11 @@ class ScanFragment : BaseFragment<FragmentScanBinding>(R.layout.fragment_scan) {
         }
         viewModel.openBlueToothAndLocation.observe(viewLifecycleOwner) {
             if (it && hasBlueToothAndLocationOpen()) viewModel.doNext(ScanViewModel.Step.START_SCAN)
+        }
+        viewModel.deviceResponse.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty()) {
+                adapter.data = it
+            }
         }
     }
 
@@ -134,4 +143,8 @@ class ScanFragment : BaseFragment<FragmentScanBinding>(R.layout.fragment_scan) {
             })
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.destroy(requireContext())
+    }
 }
