@@ -48,7 +48,7 @@ class ScanFragment : BaseFragment<FragmentScanBinding>(R.layout.fragment_scan) {
     override fun initView(arguments: HashMap<String, Any>?) {
         initPermission()
         viewModel.init(requireContext())
-        adapter.clickItem = { viewModel.doNext(BlueToothUtil.Step.CONNECT_DEVICE, it)}
+        adapter.clickItem = { viewModel.doNext(BlueToothUtil.Step.CONNECT_DEVICE, it) }
         initObservable()
     }
 

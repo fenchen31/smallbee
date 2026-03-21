@@ -12,7 +12,8 @@ import com.practice.common.recyclerview.SingleAdapter
 class DeviceAdapter(private val layoutId: Int) :
     SingleAdapter<ItemDeviceBinding, BluetoothDevice>(layoutId) {
 
-    var clickItem: ((BluetoothDevice) -> Unit) ?= null
+    var clickItem: ((BluetoothDevice) -> Unit)? = null
+
     @SuppressLint("MissingPermission")
     override fun bindingItem(
         binding: ItemDeviceBinding, position: Int, data: ArrayList<BluetoothDevice>
@@ -25,7 +26,7 @@ class DeviceAdapter(private val layoutId: Int) :
     }
 
     private fun getType(bluetoothClass: BluetoothClass?): Int {
-        return when(bluetoothClass?.deviceClass) {
+        return when (bluetoothClass?.deviceClass) {
             Major.PHONE -> R.drawable.ic_phone
             Major.COMPUTER -> R.drawable.ic_desktop
             else -> R.drawable.ic_laptop

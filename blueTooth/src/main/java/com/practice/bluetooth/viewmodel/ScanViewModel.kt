@@ -1,9 +1,9 @@
 package com.practice.bluetooth.viewmodel
 
 import android.annotation.SuppressLint
-import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.content.Context
+import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,9 +14,9 @@ class ScanViewModel : ViewModel() {
     val showLoading = ObservableField(false)
     val checkPermission = MutableLiveData((false))
     val openBlueToothAndLocation = MutableLiveData(false)
-    private lateinit var blueToothAdapter: BluetoothAdapter
     val deviceResponse = MutableLiveData<ArrayList<BluetoothDevice>>()
     val connectState = ObservableField("初始状态")
+    private val TAG = "ScanViewModel"
 
     @SuppressLint("MissingPermission")
     fun init(context: Context) {
@@ -50,32 +50,37 @@ class ScanViewModel : ViewModel() {
             BlueToothUtil.Step.START_SCAN -> {
                 openBlueToothAndLocation.value = false
                 showLoading.set(true)
+                deviceResponse.value?.clear()
                 BlueToothUtil.getInstance().startScan()
             }
 
             BlueToothUtil.Step.STOP_SCAN -> {
-                blueToothAdapter.cancelDiscovery()
+                BlueToothUtil.getInstance().stopScan()
                 showLoading.set(false)
             }
-            BlueToothUtil.Step.CONNECT_DEVICE -> {
-                BlueToothUtil.getInstance().connectDevice(device!!, object : BlueToothUtil.DeviceCallback {
-                    override fun connectStatus(state: BlueToothUtil.ConnectState, errMsg: String?) {
-                        connectState.set(state.toString())
-                    }
 
-                    override fun onReceiveData(data: ByteArray) {
-                        TODO("Not yet implemented")
-                    }
-
-                    override fun onRssiUpdate(rssi: Int) {
-                        TODO("Not yet implemented")
-                    }
-                })
-            }
-            BlueToothUtil.Step.DISCONNECT_DEVICE -> {
-                //BlueToothUtil.getInstance().disConnectDevice()
-            }
+            BlueToothUtil.Step.CONNECT_DEVICE -> connectDevice(device!!)
+            BlueToothUtil.Step.DISCONNECT_DEVICE -> BlueToothUtil.getInstance().disConnectDevice()
         }
+    }
+
+    private fun connectDevice(device: BluetoothDevice) {
+        BlueToothUtil.getInstance().connectStateCallback =
+            object : BlueToothUtil.ConnectStateCallback {
+                override fun connectStatus(state: BlueToothUtil.ConnectState, errMsg: String?) {
+                    when (state) {
+                        BlueToothUtil.ConnectState.CONNECT_SUCCESS -> {}
+                        else -> connectState.set(state.toString())
+                    }
+                }
+            }
+        BlueToothUtil.getInstance().receiveDataCallback =
+            object : BlueToothUtil.ReceiveDataCallback {
+                override fun onReceiveData(errMsg: String?, data: String?) {
+                    Log.d(TAG, "data: $data")
+                }
+            }
+        BlueToothUtil.getInstance().connectDeviceAfterSetCallback(device)
     }
 
     fun destroy(context: Context) {

@@ -28,7 +28,7 @@ class ApiService private constructor(){
         }
     }
 
-    private val okHttpClient = OkHttpClient.Builder()
+    val okHttpClient = OkHttpClient.Builder()
         .connectTimeout(CONNECTION_TIMOUT, TimeUnit.SECONDS)
         .writeTimeout(WRITE_TIMOUT, TimeUnit.SECONDS)
         .readTimeout(READ_TIMOUT, TimeUnit.SECONDS)

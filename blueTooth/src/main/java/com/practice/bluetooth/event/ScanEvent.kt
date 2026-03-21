@@ -5,6 +5,7 @@ import com.practice.bluetooth.utils.BlueToothUtil
 import com.practice.bluetooth.viewmodel.ScanViewModel
 
 class ScanEvent {
+    private var data = 1
 
     fun startScan(viewModel: ScanViewModel){
         viewModel.doNext(BlueToothUtil.Step.CHECK_PERMISSION)//每次扫描都应该先走一遍权限检查

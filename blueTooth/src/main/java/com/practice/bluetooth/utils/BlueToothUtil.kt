@@ -6,30 +6,40 @@ import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.IntentFilter
-import com.practice.bluetooth.response.DeviceResponse
 import com.practice.common.base.BaseCallback
 import java.util.UUID
 
-class BlueToothUtil private constructor(){
+class BlueToothUtil private constructor() {
 
     private lateinit var blueToothAdapter: BluetoothAdapter
     private lateinit var blueToothReceiver: BlueToothReceiver
-    private var connectDeviceThread:ConnectDeviceThread ?= null
-    companion object{
+    private var connectDeviceThread: ConnectDeviceThread? = null
+    private var connectedDevices: MutableList<BluetoothDevice> = mutableListOf()
+    var receiveDataCallback: ReceiveDataCallback? = null
+    var connectStateCallback: ConnectStateCallback? = null
+    var rssiUpdateCallback: RssiUpdateCallback? = null
+
+
+    companion object {
         @Volatile
         private var instance: BlueToothUtil? = null
-        @JvmStatic
-        val MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
 
         @JvmStatic
-        fun getInstance(): BlueToothUtil{
-            return instance ?: synchronized(this){
+        val MY_UUID: UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
+
+        @JvmStatic
+        fun getInstance(): BlueToothUtil {
+            return instance ?: synchronized(this) {
                 instance ?: BlueToothUtil().also { instance = it }
             }
         }
     }
 
-    fun register(context: Context, fun1:((BluetoothDevice) -> Unit) ?= null, fun2:((BlueToothReceiver.DiscoverState) -> Unit) ?= null,) {
+    fun register(
+        context: Context,
+        fun1: ((BluetoothDevice) -> Unit)? = null,
+        fun2: ((BlueToothReceiver.DiscoverState) -> Unit)? = null,
+    ) {
         blueToothAdapter = context.getSystemService(BluetoothManager::class.java).adapter
         blueToothReceiver = BlueToothReceiver()
         val filter = IntentFilter().apply {
@@ -54,49 +64,54 @@ class BlueToothUtil private constructor(){
     }
 
     @SuppressLint("MissingPermission")
-    fun startScan(){
-        if (blueToothAdapter.isDiscovering) {
-            blueToothAdapter.cancelDiscovery()
-        }
+    fun startScan() {
+        stopScan()
         blueToothAdapter.startDiscovery()
     }
 
     @SuppressLint("MissingPermission")
-    fun stopScan(){
+    fun stopScan() {
         if (blueToothAdapter.isDiscovering) {
             blueToothAdapter.cancelDiscovery()
         }
     }
 
-    fun connectDevice(device: BluetoothDevice, callback: DeviceCallback?){
-        callback?.connectStatus(ConnectState.CONNECTING)
+    fun connectDeviceAfterSetCallback(device: BluetoothDevice) {
+        stopScan()
         synchronized(this) {
-            connectDeviceThread?.cancel()
-            connectDeviceThread = null
-            connectDeviceThread = ConnectDeviceThread(device, callback)
-            cancelDiscover()
+            disConnectDevice()
+            connectDeviceThread =
+                ConnectDeviceThread(device, connectStateCallback, receiveDataCallback, connectedDevices)
             connectDeviceThread?.start()
         }
     }
 
-    fun disConnectDevice(device: BluetoothDevice){
-       // device.cancelBondProcess()
+    fun disConnectDevice() {
+        connectDeviceThread?.operationType = ConnectDeviceThread.OperationType.DISCONNECT_DEVICE
+        connectDeviceThread?.start()
+        connectDeviceThread = null
     }
 
-    @SuppressLint("MissingPermission")
-    private fun cancelDiscover(){
-        if (blueToothAdapter.isDiscovering) {
-            blueToothAdapter.cancelDiscovery()
-        }
+    fun sendData(data: String) {
+        connectDeviceThread?.dataToBeSent?.set(data)
     }
 
-    fun unRegister(context: Context){
+    fun unRegister(context: Context) {
+        receiveDataCallback = null
+        connectStateCallback = null
+        rssiUpdateCallback = null
         context.unregisterReceiver(blueToothReceiver)
     }
 
-    interface DeviceCallback{
-        fun connectStatus(state: ConnectState, errMsg: String?= null)
-        fun onReceiveData(data: ByteArray)
+    interface ReceiveDataCallback {
+        fun onReceiveData(errMsg: String? = null, data: String? = null)
+    }
+
+    interface ConnectStateCallback {
+        fun connectStatus(state: ConnectState, errMsg: String? = null)
+    }
+
+    interface RssiUpdateCallback {
         fun onRssiUpdate(rssi: Int)
     }
 
