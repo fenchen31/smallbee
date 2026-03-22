@@ -28,7 +28,6 @@ class ConnectDeviceThread constructor(
             OperationType.SEND_DATA -> dataToBeSent.get()?.let { WriteThread.getInstance().data.set( it) }
             OperationType.DISCONNECT_DEVICE -> cancel()
         }
-
     }
 
     @SuppressLint("MissingPermission")

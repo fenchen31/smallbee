@@ -8,6 +8,7 @@
     <string name="please_give_location_permission">请赋予定位权限</string>
     <string name="please_give_blueTooth_permission">请赋予蓝牙权限</string>
     <string name="unknow_device">未知设备</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="received_data">接受到的数据</string>
+    <string name="sended_data">发送的数据</string>
+    <string name="send">发送</string>
 </resources>

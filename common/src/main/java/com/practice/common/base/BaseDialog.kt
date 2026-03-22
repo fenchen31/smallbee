@@ -8,6 +8,9 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 abstract class BaseDialog<B : ViewDataBinding>(
     private val bind: B? = null, @LayoutRes val layoutId: Int? = null
@@ -25,6 +28,7 @@ abstract class BaseDialog<B : ViewDataBinding>(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = bind ?: DataBindingUtil.inflate(inflater, layoutId!!, container, false)
+        EventBus.getDefault().register(this)
         initView()
         initData()
         return binding.root
@@ -60,12 +64,19 @@ abstract class BaseDialog<B : ViewDataBinding>(
     abstract fun initView()
 
     abstract fun initData()
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    open fun onEventBusEvent(event: BaseEvent){}
 
     override fun onDestroy() {
         super.onDestroy()
         if (::binding.isInitialized) {
             binding.unbind()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        EventBus.getDefault().unregister(this)
     }
 
 }

@@ -8,6 +8,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 abstract class BaseActivity<Binding : ViewDataBinding>(@LayoutRes val layoutId: Int) : AppCompatActivity() {
 
@@ -15,6 +18,7 @@ abstract class BaseActivity<Binding : ViewDataBinding>(@LayoutRes val layoutId: 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        EventBus.getDefault().register(this)
         binding = DataBindingUtil.inflate(layoutInflater, layoutId, null, false)
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -28,9 +32,12 @@ abstract class BaseActivity<Binding : ViewDataBinding>(@LayoutRes val layoutId: 
 
     override fun onDestroy() {
         super.onDestroy()
+        EventBus.getDefault().unregister(this)
         binding.unbind()
     }
 
     abstract fun initView()
     abstract fun loadData()
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    open fun onEventBusEvent(event: BaseEvent){}
 }

@@ -9,8 +9,9 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-
-private const val DATA = "data"
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 abstract class BaseFragment<B : ViewDataBinding>(@LayoutRes val layoutId: Int) : Fragment() {
 
@@ -30,6 +31,7 @@ abstract class BaseFragment<B : ViewDataBinding>(@LayoutRes val layoutId: Int) :
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
+        EventBus.getDefault().register(this)
         initBinding()
         return binding.root
     }
@@ -37,7 +39,7 @@ abstract class BaseFragment<B : ViewDataBinding>(@LayoutRes val layoutId: Int) :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView(argumentsMap)
-
+        EventBus.getDefault().unregister(this)
     }
 
     override fun onDestroyView() {
@@ -45,17 +47,22 @@ abstract class BaseFragment<B : ViewDataBinding>(@LayoutRes val layoutId: Int) :
         binding.unbind()
     }
 
-    abstract fun initBinding()//设置xml中的变量
+    abstract fun initBinding()//设置xml中的变量,如binding.viewmodel = viewmodel
 
-    abstract fun initView(arguments : HashMap<String, Any>? = null)
+    abstract fun initView(arguments: HashMap<String, Any>? = null)
 
-    companion object{
-        fun <T :BaseFragment<out ViewDataBinding>> newInstance(
-            clazz: Class<T>, data: HashMap<String, Any>? = null
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    open fun onEventBusEvent(event: BaseEvent) {
+    }
+
+    companion object {
+        open val DATA = "data"
+        fun <T : BaseFragment<out ViewDataBinding>> newInstance(
+            clazz: Class<T>, data: HashMap<String, *>? = null
         ): T {
             val fragment = clazz.getDeclaredConstructor().newInstance() as T
-            fragment.arguments = Bundle().apply {
-                putSerializable(DATA, data)
+            data?.let {
+                fragment.arguments = Bundle().apply { putSerializable(DATA, data) }
             }
             return fragment
         }

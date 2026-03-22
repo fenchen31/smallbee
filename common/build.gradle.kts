@@ -33,7 +33,7 @@ android {
         sourceCompatibility = config["sourceCompatibility"] as JavaVersion
         targetCompatibility = config["targetCompatibility"] as JavaVersion
     }
-    dataBinding{
+    dataBinding {
         enable = config["dataBinding"] as Boolean
     }
     kotlinOptions {
@@ -51,5 +51,6 @@ dependencies {
     api(libs.retrofit)
     api(libs.gson)
     api(libs.okhttp)
-    api (libs.glide)
+    api(libs.glide)
+    api(libs.eventbus)
 }

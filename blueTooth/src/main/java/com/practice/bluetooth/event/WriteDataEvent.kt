@@ -5,6 +5,6 @@ import com.practice.bluetooth.utils.BlueToothUtil
 class WriteDataEvent {
 
     fun sendData(data:String){
-        BlueToothUtil.getInstance().stopScan()
+        BlueToothUtil.getInstance().sendData(data)
     }
 }

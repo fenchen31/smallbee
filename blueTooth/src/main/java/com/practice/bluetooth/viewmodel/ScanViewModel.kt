@@ -9,6 +9,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.practice.bluetooth.utils.BlueToothReceiver
 import com.practice.bluetooth.utils.BlueToothUtil
+import com.practice.bluetooth.utils.EventBusConst
+import com.practice.common.base.BaseEvent
+import org.greenrobot.eventbus.EventBus
 
 class ScanViewModel : ViewModel() {
     val showLoading = ObservableField(false)
@@ -69,15 +72,15 @@ class ScanViewModel : ViewModel() {
             object : BlueToothUtil.ConnectStateCallback {
                 override fun connectStatus(state: BlueToothUtil.ConnectState, errMsg: String?) {
                     when (state) {
-                        BlueToothUtil.ConnectState.CONNECT_SUCCESS -> {}
+                        BlueToothUtil.ConnectState.CONNECT_SUCCESS -> {
+                            val data = BaseEvent()
+                            data.code = EventBusConst.EVENT_JUMP_TO_SEND_MESSAGE
+                            data.data = device
+                            EventBus.getDefault().post(data)
+                        }
+
                         else -> connectState.set(state.toString())
                     }
-                }
-            }
-        BlueToothUtil.getInstance().receiveDataCallback =
-            object : BlueToothUtil.ReceiveDataCallback {
-                override fun onReceiveData(errMsg: String?, data: String?) {
-                    Log.d(TAG, "data: $data")
                 }
             }
         BlueToothUtil.getInstance().connectDeviceAfterSetCallback(device)
